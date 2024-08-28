@@ -29,3 +29,142 @@ ORDER BY Total_Global_Sales DESC;
 -- Sales By Genre and Region
 
  SELECT c5 AS genre, 
+       SUM(c7 + c8 + c9 + c10) AS Total_Global_Sales,
+       SUM(c7) AS NA_Sales,
+       SUM(c8) AS EU_Sales,
+       SUM(c9) AS JP_Sales,
+       SUM(c10) AS Other_Sales
+FROM vgsales
+GROUP BY c5
+ORDER BY Total_Global_Sales DESC;
+
+-- Platform With Highest Total Global Salesdemo
+
+SELECT c3 as platform, SUM(c11) AS Total_Global_Sales
+FROM vgsales
+GROUP BY platform
+ORDER BY Total_Global_Sales DESC;
+
+-- Platform Sales By Region
+
+SELECT c3 as platform, 
+       SUM(c7) AS NA_Sales,
+       SUM(c8) AS EU_Sales,
+       SUM(c9) AS JP_Sales,
+       SUM(c10) AS Other_Sales
+FROM vgsales
+GROUP BY platform
+ORDER BY Total_Global_Sales DESC;
+
+-- Publisher With Highest Global Sales
+
+SELECT c6 as publisher, SUM(c11) AS Total_Global_Sales
+FROM vgsales
+GROUP BY publisher
+ORDER BY Total_Global_Sales DESC;
+
+-- Sales Performance Of Publisher By Region
+
+SELECT c6 AS publisher, 
+       SUM(c7) + SUM(c8) + SUM(c9) + SUM(c10) AS Total_Global_Sales,
+       SUM(c7) AS NA_Sales,
+       SUM(c8) AS EU_Sales,
+       SUM(c9) AS JP_Sales,
+       SUM(c10) AS Other_Sales
+FROM vgsales
+GROUP BY c6
+ORDER BY Total_Global_Sales DESC;
+
+-- Market share of genres
+SELECT c5 as genre, 
+       SUM(c11) / (SELECT SUM(c11) FROM vgsales) * 100 AS Genre_Market_Share
+FROM vgsales
+GROUP BY genre
+ORDER BY Genre_Market_Share DESC;
+
+-- Market share of platforms
+SELECT c6 as platform, 
+       SUM(c11) / (SELECT SUM(c11) FROM vgsales) * 100 AS Platform_Market_Share
+FROM vgsales
+GROUP BY platform
+ORDER BY Platform_Market_Share DESC;
+
+-- Market share of publishers
+SELECT c6 as publisher, 
+       SUM(c11) / (SELECT SUM(c11) FROM vgsales) * 100 AS Publisher_Market_Share
+FROM vgsales
+GROUP BY publisher
+ORDER BY Publisher_Market_Share DESC;
+
+-- Market share of genres over the years
+
+SELECT 
+    c4 AS year, 
+    c5 AS genre, 
+    (SUM(c11) / total_sales_for_year * 100) AS Genre_Market_Share
+FROM 
+    vgsales AS vgs
+JOIN 
+    (SELECT c4 AS year, SUM(c11) AS total_sales_for_year
+     FROM vgsales
+     GROUP BY c4) AS year_totals
+ON vgs.c4 = year_totals.year
+GROUP BY 
+    c4, c5, total_sales_for_year
+ORDER BY 
+    c4, Genre_Market_Share DESC;
+
+-- Average global sales by platform
+
+SELECT c3 as platform, 
+       AVG(c11) AS Avg_Global_Sales
+FROM vgsales
+GROUP BY platform
+ORDER BY Avg_Global_Sales DESC;
+
+-- Average global sales by publisher
+
+SELECT c6 as publisher, 
+       AVG(c11) AS Avg_Global_Sales
+FROM vgsales
+GROUP BY publisher
+ORDER BY Avg_Global_Sales DESC;
+
+-- Average revenue by genre
+
+SELECT c5 as genre, 
+       AVG(c11) AS Avg_Global_Sales
+FROM vgsales
+GROUP BY genre
+ORDER BY Avg_Global_Sales DESC;
+
+-- Average revenue by platform
+SELECT c3 as platform, 
+       AVG(c11) AS Avg_Global_Sales
+FROM vgsales
+GROUP BY platform
+ORDER BY Avg_Global_Sales DESC;
+
+-- Average revenue by region
+SELECT 
+       SUM(c7) / COUNT(*) AS Avg_NA_Sales,
+       SUM(c8) / COUNT(*) AS Avg_EU_Sales,
+       SUM(c9) / COUNT(*) AS Avg_JP_Sales,
+       SUM(c10) / COUNT(*) AS Avg_Other_Sales
+FROM vgsales;
+
+-- High-performing games
+
+SELECT c2 as name, 
+       c11 as Global_Sales
+FROM vgsales
+ORDER BY Global_Sales DESC
+LIMIT 10;
+
+-- Low-performing games
+
+SELECT c2 as name, 
+       c11 as Global_Sales
+FROM vgsales
+ORDER BY Global_Sales ASC
+LIMIT 10;
