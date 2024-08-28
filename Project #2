@@ -1,0 +1,121 @@
+Select *
+From StudentsPerformance
+
+-- How does average scores differ by gender?
+
+SELECT gender,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM StudentsPerformance
+GROUP BY gender;
+
+-- How do average scores differ by race/ethnicity?
+
+SELECT race_ethnicity,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY race_ethnicity;
+
+-- What is the average performance in math, reading, and writing based on parental level of education?
+
+SELECT parental_level_of_education,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY parental_level_of_education
+ORDER BY Avg_Math_Score DESC;
+
+-- How does the type of lunch impact student performance in math, reading, and writing?
+
+SELECT lunch,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY lunch;
+
+-- Does taking a test preparation course correlate with higher scores?
+
+SELECT test_preparation_course,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY test_preparation_course;
+
+-- How does the interaction between gender and test preparation course affect average scores?
+
+SELECT gender,
+       test_preparation_course,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY gender, test_preparation_course
+ORDER BY gender, test_preparation_course;
+
+-- What are the performance distributions in math, reading, and writing by race/ethnicity and parental level of education?
+
+SELECT race_ethnicity,
+       parental_level_of_education,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY race_ethnicity, parental_level_of_education
+ORDER BY race_ethnicity, parental_level_of_education;
+
+-- What is the difference in average scores for students who took a test preparation course versus those who did not?
+
+SELECT 
+    test_preparation_course,
+    AVG(math_score) AS Avg_Math_Score,
+    AVG(reading_score) AS Avg_Reading_Score,
+    AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY test_preparation_course;
+
+-- How does the interaction between gender and lunch type impact average scores?
+
+SELECT gender,
+       lunch,
+       AVG(math_score) AS Avg_Math_Score,
+       AVG(reading_score) AS Avg_Reading_Score,
+       AVG(writing_score) AS Avg_Writing_Score
+FROM studentsperformance
+GROUP BY gender, lunch
+ORDER BY gender, lunch;
+
+-- What are the highest and lowest scores and their corresponding attributes?
+
+-- Highest scores
+SELECT 'Highest' AS Score_Type, 
+       math_score, 
+       reading_score, 
+       writing_score,
+       gender, 
+       race_ethnicity,
+       parental_level_of_education, 
+       lunch, 
+       test_preparation_course
+FROM studentsperformance
+ORDER BY math_score DESC, reading_score DESC, writing_score DESC
+LIMIT 1;
+
+-- Lowest scores
+SELECT 'Lowest' AS Score_Type, 
+       math_score, 
+       reading_score, 
+       writing_score,
+       gender, 
+       race_ethnicity,
+       parental_level_of_education, 
+       lunch, 
+       test_preparation_course
+FROM studentsperformance
+ORDER BY math_score ASC, reading_score ASC, writing_score ASC
+LIMIT 1;
