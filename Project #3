@@ -1,0 +1,133 @@
+Select *
+FROM NYC_Data
+
+-- What is the average price of listings by neighborhood group?
+
+SELECT neighbourhood_group,
+       AVG(price) AS Avg_Price
+FROM NYC_Data
+GROUP BY neighbourhood_group
+ORDER BY Avg_Price DESC;
+
+-- What is the price distribution of listings in each neighborhood?
+
+SELECT neighbourhood,
+       price,
+       COUNT(*) AS Number_of_Listings
+FROM NYC_Data
+GROUP BY neighbourhood, price
+ORDER BY neighbourhood, price;
+
+-- How does the average availability (in days) of listings vary by neighborhood group?
+
+SELECT neighbourhood_group,
+       AVG(availability_365) AS Avg_Availability
+FROM NYC_Data
+GROUP BY neighbourhood_group
+ORDER BY Avg_Availability DESC;
+
+-- What is the distribution of availability in days for listings?
+
+SELECT availability_365,
+       COUNT(*) AS Number_of_Listings
+FROM NYC_Data
+GROUP BY availability_365
+ORDER BY availability_365;
+
+-- How many listings does each host have, and what is their average price?
+
+SELECT host_id,
+       host_name,
+       COUNT(*) AS Number_of_Listings,
+       AVG(price) AS Avg_Price
+FROM NYC_Data
+GROUP BY host_id, host_name
+ORDER BY Number_of_Listings DESC;
+
+-- What is the average number of reviews for listings by host?
+
+SELECT host_id,
+       host_name,
+       AVG(number_of_reviews) AS Avg_Reviews
+FROM NYC_Data
+GROUP BY host_id, host_name
+ORDER BY Avg_Reviews DESC;
+
+-- What is the average number of reviews per month by neighborhood group?
+
+SELECT neighbourhood_group,
+       AVG(reviews_per_month) AS Avg_Reviews_Per_Month
+FROM NYC_Data
+GROUP BY neighbourhood_group
+ORDER BY Avg_Reviews_Per_Month DESC;
+
+-- How many listings have not been reviewed in the past year?
+
+SELECT COUNT(*) AS Number_of_Listings_No_Recent_Reviews
+FROM NYC_Data
+WHERE last_review IS NULL;
+
+-- What is the average minimum number of nights required for listings by neighborhood group?
+
+SELECT neighbourhood_group,
+       AVG(minimum_nights) AS Avg_Minimum_Nights
+FROM NYC_Data
+GROUP BY neighbourhood_group
+ORDER BY Avg_Minimum_Nights DESC;
+
+-- What is the distribution of minimum nights across all listings?
+
+SELECT minimum_nights,
+       COUNT(*) AS Number_of_Listings
+FROM NYC_Data
+GROUP BY minimum_nights
+ORDER BY minimum_nights;
+
+-- What is the average price of listings based on their latitude and longitude?
+
+SELECT AVG(price) AS Avg_Price,
+       latitude,
+       longitude
+FROM NYC_Data
+GROUP BY latitude, longitude
+ORDER BY Avg_Price DESC;
+
+-- What are the top 5 neighborhoods with the highest average price?
+
+SELECT neighbourhood,
+       AVG(price) AS Avg_Price
+FROM NYC_Data
+GROUP BY neighbourhood
+ORDER BY Avg_Price DESC
+LIMIT 5;
+
+-- What are the details of the top 10 most expensive listings?
+
+SELECT id,
+       name,
+       host_id,
+       host_name,
+       neighbourhood_group,
+       neighbourhood,
+       price,
+       minimum_nights,
+       number_of_reviews,
+       last_review,
+       reviews_per_month,
+       calculated_host_listings_count,
+       availability_365
+FROM NYC_Data
+ORDER BY price DESC
+LIMIT 10;
+
+-- How many hosts have more than one listing, and what is their average price?
+
+SELECT host_id,
+       host_name,
+       COUNT(*) AS Number_of_Listings,
+       AVG(price) AS Avg_Price
+FROM NYC_Data
+GROUP BY host_id, host_name
+HAVING COUNT(*) > 1
+ORDER BY Number_of_Listings DESC;
+
