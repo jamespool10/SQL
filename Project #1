@@ -1,0 +1,31 @@
+Select *
+FROM vgsales
+
+--Global Sales By Year
+
+SELECT c4 as Year, SUM(c11) AS Total_Global_Sales
+FROM vgsales
+GROUP BY Year
+ORDER BY Year;
+
+-- Sales Pattern By Region Over Time
+
+SELECT c4 as year, 
+       SUM(c7) AS NA_Sales,
+       SUM(c8) AS EU_Sales,
+       SUM(c9) AS JP_Sales,
+       SUM(c10) AS Other_Sales
+FROM vgsales
+GROUP BY year
+ORDER BY year;
+
+-- Genres With Highest Global Sales
+
+SELECT c5 as genre, SUM(c11) AS Total_Global_Sales
+FROM vgsales
+GROUP BY genre
+ORDER BY Total_Global_Sales DESC;
+
+-- Sales By Genre and Region
+
+ SELECT c5 AS genre, 
